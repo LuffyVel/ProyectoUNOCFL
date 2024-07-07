@@ -1,123 +1,125 @@
 package com.edu.espol.xd;
 
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class JuegoUNO {
-    private Baraja baraja;
-    private Jugador jugador;
-    private Jugador maquina;
-    private Carta cartaEnJuego;
-    private Scanner scanner;
+   private Baraja baraja = new Baraja();
+   private Jugador jugador = new Jugador("Jugador");
+   private Jugador maquina = new Jugador("Maquina");
+   private Carta cartaEnJuego;
+   private Scanner scanner;
 
-    public JuegoUNO() {
-        baraja = new Baraja();
-        jugador = new Jugador("Jugador");
-        maquina = new Jugador("Maquina");
-        scanner = new Scanner(System.in);
-    }
+   public JuegoUNO() {
+      this.scanner = new Scanner(System.in);
+   }
 
-    public void iniciarJuego() {
-        for (int i = 0; i < 7; i++) {
-            jugador.tomarCarta(baraja.robarCarta());
-            maquina.tomarCarta(baraja.robarCarta());
-        }
-        cartaEnJuego = baraja.robarCarta();
-        while (cartaEnJuego.getTipo() != Carta.Tipo.NUMERO) {
-            baraja.devolverCarta(cartaEnJuego);
-            cartaEnJuego = baraja.robarCarta();
-        }
-        System.out.println("Carta inicial: " + cartaEnJuego);
-        turnoJugador();
-    }
+   public void iniciarJuego() {
+      for(int i = 0; i < 7; ++i) {
+         this.jugador.tomarCarta(this.baraja.robarCarta());
+         this.maquina.tomarCarta(this.baraja.robarCarta());
+      }
 
-    private void turnoJugador() {
-        while (true) {
-            System.out.println(jugador);
-            System.out.println("Carta en juego: " + cartaEnJuego);
-            boolean tieneJugadaValida = false;
+      for(this.cartaEnJuego = this.baraja.robarCarta(); this.cartaEnJuego.getTipo() != Tipo.NUMERO; this.cartaEnJuego = this.baraja.robarCarta()) {
+         this.baraja.devolverCarta(this.cartaEnJuego);
+      }
 
-            for (Carta carta : jugador.getMano()) {
-                if (esJugadaValida(carta)) {
-                    tieneJugadaValida = true;
-                    break;
-                }
+      System.out.println("Carta inicial: " + String.valueOf(this.cartaEnJuego));
+      this.turnoJugador();
+   }
+
+   private void turnoJugador() {
+      while(true) {
+         System.out.println(this.jugador);
+         System.out.println("Carta en juego: " + String.valueOf(this.cartaEnJuego));
+         boolean tieneJugadaValida = false;
+         Iterator var3 = this.jugador.getMano().iterator();
+
+         while(var3.hasNext()) {
+            Carta carta = (Carta)var3.next();
+            if (this.esJugadaValida(carta)) {
+               tieneJugadaValida = true;
+               break;
             }
+         }
 
-            if (!tieneJugadaValida) {
-                System.out.println("No tienes una jugada válida. Robas una carta.");
-                jugador.tomarCarta(baraja.robarCarta());
-                turnoMaquina();
-                return;
-            }
-
-            System.out.print("Elige una carta (índice): ");
-            int indice = scanner.nextInt();
-            if (indice < 0 || indice >= jugador.getMano().size()) {
-                System.out.println("Índice no válido. Intenta de nuevo.");
-                continue;
-            }
-            Carta cartaJugada = jugador.jugarCarta(indice);
-            if (esJugadaValida(cartaJugada)) {
-                cartaEnJuego = cartaJugada;
-                System.out.println("Has jugado: " + cartaJugada);
-                if (!jugador.tieneCartas()) {
-                    System.out.println("¡Has ganado!");
-                    break;
-                }
-                turnoMaquina();
-            } else {
-                System.out.println("Jugada no válida. Intenta de nuevo.");
-                jugador.tomarCarta(cartaJugada);
-            }
-        }
-    }
-
-    private void turnoMaquina() {
-        boolean tieneJugadaValida = false;
-
-        for (Carta carta : maquina.getMano()) {
-            if (esJugadaValida(carta)) {
-                tieneJugadaValida = true;
-                break;
-            }
-        }
-
-        if (!tieneJugadaValida) {
-            System.out.println("La máquina no tiene una jugada válida. Roba una carta.");
-            maquina.tomarCarta(baraja.robarCarta());
-            turnoJugador();
+         if (!tieneJugadaValida) {
+            System.out.println("No tienes una jugada v\u00e1lida. Robas una carta.");
+            this.jugador.tomarCarta(this.baraja.robarCarta());
+            this.turnoMaquina();
             return;
-        }
+         }
 
-        for (int i = 0; i < maquina.getMano().size(); i++) {
-            Carta cartaJugada = maquina.jugarCarta(i);
-            if (esJugadaValida(cartaJugada)) {
-                cartaEnJuego = cartaJugada;
-                System.out.println("La máquina ha jugado: " + cartaJugada);
-                if (!maquina.tieneCartas()) {
-                    System.out.println("¡La máquina ha ganado!");
-                    break;
-                }
-                turnoJugador();
-                return;
+         System.out.print("Elige una carta (\u00edndice): ");
+         int indice = this.scanner.nextInt();
+         if (indice >= 0 && indice < this.jugador.getMano().size()) {
+            Carta cartaJugada = this.jugador.jugarCarta(indice);
+            if (this.esJugadaValida(cartaJugada)) {
+               this.cartaEnJuego = cartaJugada;
+               System.out.println("Has jugado: " + String.valueOf(cartaJugada));
+               if (!this.jugador.tieneCartas()) {
+                  System.out.println("\u00a1Has ganado!");
+                  return;
+               }
+
+               this.turnoMaquina();
             } else {
-                maquina.tomarCarta(cartaJugada);
+               System.out.println("Jugada no v\u00e1lida. Intenta de nuevo.");
+               this.jugador.tomarCarta(cartaJugada);
             }
-        }
-    }
+         } else {
+            System.out.println("\u00cdndice no v\u00e1lido. Intenta de nuevo.");
+         }
+      }
+   }
 
-    private boolean esJugadaValida(Carta carta) {
-        if (carta.getColor() == cartaEnJuego.getColor() || carta.getNumero() == cartaEnJuego.getNumero()) {
-            return true;
-        }
-        if (carta.getTipo() == Carta.Tipo.CAMBIO_COLOR || carta.getTipo() == Carta.Tipo.MAS_CUATRO) {
-            return true;
-        }
-        return false;
-    }
+   private void turnoMaquina() {
+      boolean tieneJugadaValida = false;
+      Iterator var3 = this.maquina.getMano().iterator();
 
-    public static void main(String[] args) {
-        JuegoUNO juego = new JuegoUNO();
-        juego.iniciarJuego();
-    }
+      while(var3.hasNext()) {
+         Carta carta = (Carta)var3.next();
+         if (this.esJugadaValida(carta)) {
+            tieneJugadaValida = true;
+            break;
+         }
+      }
+
+      if (!tieneJugadaValida) {
+         System.out.println("La m\u00e1quina no tiene una jugada v\u00e1lida. Roba una carta.");
+         this.maquina.tomarCarta(this.baraja.robarCarta());
+         this.turnoJugador();
+      } else {
+         for(int i = 0; i < this.maquina.getMano().size(); ++i) {
+            Carta cartaJugada = this.maquina.jugarCarta(i);
+            if (this.esJugadaValida(cartaJugada)) {
+               this.cartaEnJuego = cartaJugada;
+               System.out.println("La m\u00e1quina ha jugado: " + String.valueOf(cartaJugada));
+               if (this.maquina.tieneCartas()) {
+                  this.turnoJugador();
+                  return;
+               }
+
+               System.out.println("\u00a1La m\u00e1quina ha ganado!");
+               break;
+            }
+
+            this.maquina.tomarCarta(cartaJugada);
+         }
+
+      }
+   }
+
+   private boolean esJugadaValida(Carta carta) {
+      if (carta.getColor() != this.cartaEnJuego.getColor() && carta.getNumero() != this.cartaEnJuego.getNumero()) {
+         return carta.getTipo() == Tipo.CAMBIO_COLOR || carta.getTipo() == Tipo.MAS_CUATRO;
+      } else {
+         return true;
+      }
+   }
+
+   public static void main(String[] args) {
+      JuegoUNO juego = new JuegoUNO();
+      juego.iniciarJuego();
+   }
 }

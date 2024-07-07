@@ -4,37 +4,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Jugador {
-    private List<Carta> mano;
-    private String nombre;
+   private List<Carta> mano;
+   private String nombre;
 
-    public Jugador(String nombre) {
-        this.nombre = nombre;
-        this.mano = new ArrayList<>();
-    }
+   public Jugador(String nombre) {
+      this.nombre = nombre;
+      this.mano = new ArrayList();
+   }
 
-    public void tomarCarta(Carta carta) {
-        mano.add(carta);
-    }
+   public void tomarCarta(Carta carta) {
+      this.mano.add(carta);
+   }
 
-    public Carta jugarCarta(int indice) {
-        return mano.remove(indice);
-    }
+   public Carta jugarCarta(int indice) {
+      return (Carta)this.mano.remove(indice);
+   }
 
-    public List<Carta> getMano() {
-        return mano;
-    }
+   public List<Carta> getMano() {
+      return this.mano;
+   }
 
-    public String getNombre() {
-        return nombre;
-    }
+   public String getNombre() {
+      return this.nombre;
+   }
 
-    public boolean tieneCartas() {
-        return !mano.isEmpty();
-    }
+   public boolean tieneCartas() {
+      return !this.mano.isEmpty();
+   }
 
-    @Override
-    public String toString() {
-        return nombre + "'s mano: " + mano;
-    }
+   public String toString() {
+      String var10000 = this.nombre;
+      return var10000 + "'s mano: " + String.valueOf(this.mano);
+   }
 }
+
 
