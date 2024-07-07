@@ -1,10 +1,10 @@
 package com.edu.espol.xd;
 
 import java.util.ArrayList;
-
+import java.util.List;
 
 public class Jugador {
-    private ArrayList<Carta> mano;
+    private List<Carta> mano;
     private String nombre;
 
     public Jugador(String nombre) {
@@ -20,7 +20,7 @@ public class Jugador {
         return mano.remove(indice);
     }
 
-    public ArrayList<Carta> getMano() {
+    public List<Carta> getMano() {
         return mano;
     }
 
