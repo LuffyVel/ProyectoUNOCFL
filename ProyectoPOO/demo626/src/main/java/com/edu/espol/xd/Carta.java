@@ -1,9 +1,6 @@
 package com.edu.espol.xd;
 
 public class Carta {
-    public enum Color { ROJO, AMARILLO, VERDE, AZUL, NEGRO }
-    public enum Tipo { NUMERO, REVERSE, BLOQUEO, CAMBIO_COLOR, MAS_DOS, MAS_CUATRO }
-
     private Color color;
     private Tipo tipo;
     private int numero;
@@ -18,6 +15,10 @@ public class Carta {
         this(color, tipo, -1);
     }
 
+    public void setColor(Color color) {
+        this.color=color;
+    }
+    
     public Color getColor() {
         return color;
     }

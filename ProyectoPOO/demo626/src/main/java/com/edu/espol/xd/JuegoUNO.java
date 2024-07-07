@@ -1,12 +1,13 @@
 package com.edu.espol.xd;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class JuegoUNO {
     private Baraja baraja;
     private Jugador jugador;
     private Jugador maquina;
-    private Carta cartaEnJuego;
+    private ArrayList<Carta> cartasenjuego;
     private Scanner scanner;
 
     public JuegoUNO() {
@@ -21,58 +22,42 @@ public class JuegoUNO {
             jugador.tomarCarta(baraja.robarCarta());
             maquina.tomarCarta(baraja.robarCarta());
         }
-        cartaEnJuego = baraja.robarCarta();
-        while (cartaEnJuego.getTipo() != Carta.Tipo.NUMERO) {
-            baraja.devolverCarta(cartaEnJuego);
-            cartaEnJuego = baraja.robarCarta();
+        Carta cartaarobar = baraja.robarCarta();
+        while (cartaarobar.getTipo() != Tipo.NUMERO) {
+            baraja.devolverCarta(cartaarobar);;
+            cartaarobar = baraja.robarCarta();
         }
-        System.out.println("Carta inicial: " + cartaEnJuego);
+        System.out.println("Carta inicial: " + cartaarobar);
+        cartasenjuego.add(cartaarobar);
         turnoJugador();
     }
 
     private void turnoJugador() {
-        while (true) {
-            System.out.println(jugador);
-            System.out.println("Carta en juego: " + cartaEnJuego);
-            boolean tieneJugadaValida = false;
+        System.out.println(jugador.getMano());
+        System.out.println("Elija la carta que desea jugar: ");
+        int indice = scanner.nextInt();
+        scanner.nextLine();
+        Carta cartaelegida = jugador.getMano().get(indice);
+        if(esJugadaValida(cartaelegida)) {
+            if((cartaelegida.getTipo()==Tipo.MAS_CUATRO || cartaelegida.getTipo() == Tipo.CAMBIO_COLOR)&& cartasenjuego.get(0).getTipo()==Tipo.NUMERO) {
+                System.out.println("Elija el nuevo color a jugar: ");
+                String nuevocolor = nextLine().toUpperCase();
+                cartasenjuego.get(0).setColor(Color.valueOf(nuevocolor));
+            }
+            cartasenjuego.add(0, cartaelegida);
+            jugador.jugarCarta(indice);
+        }
+        else {
 
-            for (Carta carta : jugador.getMano()) {
-                if (esJugadaValida(carta)) {
-                    tieneJugadaValida = true;
-                    break;
-                }
-            }
-
-            if (!tieneJugadaValida) {
-                System.out.println("No tienes una jugada válida. Robas una carta.");
-                jugador.tomarCarta(baraja.robarCarta());
-                turnoMaquina();
-                return;
-            }
-
-            System.out.print("Elige una carta (índice): ");
-            int indice = scanner.nextInt();
-            if (indice < 0 || indice >= jugador.getMano().size()) {
-                System.out.println("Índice no válido. Intenta de nuevo.");
-                continue;
-            }
-            Carta cartaJugada = jugador.jugarCarta(indice);
-            if (esJugadaValida(cartaJugada)) {
-                cartaEnJuego = cartaJugada;
-                System.out.println("Has jugado: " + cartaJugada);
-                if (!jugador.tieneCartas()) {
-                    System.out.println("¡Has ganado!");
-                    break;
-                }
-                turnoMaquina();
-            } else {
-                System.out.println("Jugada no válida. Intenta de nuevo.");
-                jugador.tomarCarta(cartaJugada);
-            }
         }
     }
 
-    private void turnoMaquina() {
+    private String nextLine() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'nextLine'");
+	}
+
+	private void turnoMaquina() {
         boolean tieneJugadaValida = false;
 
         for (Carta carta : maquina.getMano()) {
@@ -106,14 +91,8 @@ public class JuegoUNO {
         }
     }
 
-    private boolean esJugadaValida(Carta carta) {
-        if (carta.getColor() == cartaEnJuego.getColor() || carta.getNumero() == cartaEnJuego.getNumero()) {
-            return true;
-        }
-        if (carta.getTipo() == Carta.Tipo.CAMBIO_COLOR || carta.getTipo() == Carta.Tipo.MAS_CUATRO) {
-            return true;
-        }
-        return false;
+    public boolean esJugadaValida(Carta carta) {
+        return carta.getColor() == (cartasenjuego.get(0)).getColor() || carta.getNumero() == (cartasenjuego.get(0)).getNumero() || carta.getTipo() == Tipo.CAMBIO_COLOR || carta.getTipo() == Tipo.MAS_CUATRO;
     }
 
     public static void main(String[] args) {
