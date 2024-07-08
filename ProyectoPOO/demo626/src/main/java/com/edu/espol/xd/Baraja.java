@@ -7,11 +7,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class Baraja {
-   private List<Carta> cartas = new ArrayList();
+   private List<Carta> cartas;
 
    public Baraja() {
-      this.inicializarBaraja();
-      Collections.shuffle(this.cartas);
+      cartas = new ArrayList<>();
+      inicializarBaraja();
+      barajar();
    }
 
    private void inicializarBaraja() {
@@ -37,20 +38,26 @@ public class Baraja {
       //    }
       // }
       for (Color color : Color.values()){
-
+         for(Tipo tipo : Tipo.values()){
+            cartas.add(new Carta(color, tipo));
+         }
       }
       for(int i = 0; i < 4; ++i) {
-         this.cartas.add(new CartaComodin(Color.N, Tipo.MAS_CUATRO));
-         this.cartas.add(new CartaComodin(Color.N, Tipo.CAMBIO_COLOR));
+         this.cartas.add(new Carta(Color.NEGRO, Tipo.MAS_CUATRO));
+         this.cartas.add(new Carta(Color.NEGRO, Tipo.CAMBIO_DE_COLOR));
       }
 
+   }
+
+   public void barajar() {
+        Collections.shuffle(cartas);
    }
 
    public Carta robarCarta() {
-      return this.cartas.isEmpty() ? null : (Carta)this.cartas.remove(this.cartas.size() - 1);
+      return cartas.remove(cartas.size() - 1);
    }
 
    public void devolverCarta(Carta carta) {
-      this.cartas.add(0, carta);
+      cartas.add(0, carta);
    }
 }

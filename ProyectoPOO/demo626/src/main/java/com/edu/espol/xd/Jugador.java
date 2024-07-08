@@ -4,32 +4,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Jugador {
-   private List<Carta> mano;
+   private Mano mano;
    private String nombre;
 
    public Jugador(String nombre) {
       this.nombre = nombre;
-      this.mano = new ArrayList();
+      this.mano = new Mano();
    }
 
-   public void tomarCarta(Carta carta) {
-      this.mano.add(carta);
+   public void tomarCarta(Baraja baraja) {
+      Carta carta = baraja.robarCarta();
+      mano.agregarCarta(carta);
    }
 
    public Carta jugarCarta(int indice) {
-      return (Carta)this.mano.remove(indice);
+      return mano.removerCarta(indice);
    }
 
-   public List<Carta> getMano() {
-      return this.mano;
+   public Mano getMano() {
+      return mano;
    }
 
    public String getNombre() {
-      return this.nombre;
+      return nombre;
    }
 
    public boolean tieneCartas() {
-      return !this.mano.isEmpty();
+      return !mano.getCartas().isEmpty();
+   }
+
+   public void mostrarMano() {
+      for (int i = 0; i < mano.getCartas().size(); i++) {
+         System.out.println(i + ": " + mano.getCartas().get(i));
+      }
    }
 
    public String toString() {

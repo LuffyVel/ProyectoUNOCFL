@@ -3,27 +3,28 @@ package com.edu.espol.xd;
 public class Carta {
 
    private Color color;
-   private int numero;
+   private Tipo tipo;
 
-   public Carta(Color color) {
+   public Carta(Color color, Tipo tipo) {
       this.color = color;
-   }
-   
-   public Carta(Color color, int numero) {
-      this(color);
-      this.numero = numero;
+      this.tipo = tipo;
    }
 
    public Color getColor() {
-      return this.color;
+      return color;
    }
 
-   public int getNumero() {
-      return this.numero;
+   public Tipo getTipo() {
+      return tipo;
    }
+   public boolean esComodin() {
+      return tipo == Tipo.REVERSE || tipo == Tipo.BLOQUEO || tipo == Tipo.CAMBIO_DE_COLOR || tipo == Tipo.MAS_CUATRO || tipo == Tipo.MAS_DOS;
+   }
+
    @Override
    public String toString() {
-   return "Color"+color+"numero"+numero;
+      return color.getAbreviatura() + tipo.getSimbolo();
+   }
 //     String var10000;
 //     if (this.tipo == com.edu.espol.xd.Carta.Tipo.NUMERO) {
 //        var10000 = String.valueOf(this.color);
@@ -32,5 +33,5 @@ public class Carta {
 //        var10000 = String.valueOf(this.color);
 //        return var10000 + " " + String.valueOf(this.tipo);
 //     }
-   }
 }
+

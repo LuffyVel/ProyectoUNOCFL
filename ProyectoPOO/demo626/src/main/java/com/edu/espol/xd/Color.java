@@ -1,12 +1,21 @@
 package com.edu.espol.xd;
 
 public enum Color {
-   R,
-   A,
-   V,
-   Z,
-   N;
 
-   private Color() {
+   ROJO('R'),
+   AMARILLO('A'),
+   VERDE('V'),
+   AZUL('Z'),
+   NEGRO('N');
+
+   private char abreviatura;
+
+   Color(char abreviatura) {
+      this.abreviatura = abreviatura;
+   }
+
+
+   public char getAbreviatura() {
+      return abreviatura;
    }
 }
