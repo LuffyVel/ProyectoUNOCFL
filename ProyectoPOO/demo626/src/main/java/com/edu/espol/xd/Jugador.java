@@ -1,8 +1,5 @@
 package com.edu.espol.xd;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Jugador {
    private Mano mano;
    private String nombre;
@@ -45,4 +42,6 @@ public class Jugador {
    }
 }
 
+
+//:D
 
